@@ -15,24 +15,24 @@ class WeatherViewModel: ObservableObject, Identifiable {
             print("Invalid URL")
             return
         }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                print("Error fetching data: \(error)")
+        let task = URLSession.shared.dataTask(with: url){data, _ , error in
+            if let error {
+                print("Error: \(error)")
                 completion(.failure(error))
                 return
             }
-            
-            if let data = data {
-                print("Data received: \(String(data: data, encoding: .utf8) ?? "Unable to convert data to string")")
-                DispatchQueue.main.async {
-                    completion(.success(data))
+            else if let data{
+                do{
+                    let decodedWeather = try JSONDecoder().decode(Weather.self, from: data)
+                    DispatchQueue.main.async {
+                        self.weather = decodedWeather
+                    }
+                } catch{
+                    print("Error Decoding data.\nError: \(error)")
                 }
-            } else {
-                print("No data received.")
             }
+            
         }
-        
         task.resume()
     }
 }
