@@ -18,15 +18,3 @@ class Weather: Codable{
     let condition: String
 }
 
-class WeatherAPI{
-    
-    let baseURL: String = "https://api.weatherapi.com/v1/current.json?"
-    let key: String = "666666666666666666666666666666"
-    
-    
-    
-    func getWeather(for city: String, completion: @escaping (Result<Weather, Error>) -> Void){
-        let urlString = baseURL + "key=\(key)&q=\(city)"
-        
-    }
-}
