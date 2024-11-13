@@ -17,4 +17,7 @@ class Current: Codable {
     let feelslike_c: Double
     let feelslike_f: Double
     let air_quality: AirQuality?
+    let wind_dir: String
+    let uv: Double
+    let vis_km: Double
 }

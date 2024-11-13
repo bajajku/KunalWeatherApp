@@ -8,34 +8,32 @@
 import SwiftUI
 
 struct WeatherView: View {
-    @StateObject private var viewModel = WeatherViewModel()    
+    @StateObject private var viewModel = WeatherViewModel()
+    @StateObject private var locationManager = MyLocationManager()
+
     var body: some View {
         VStack(spacing: 16) {
             if let weather = viewModel.weather {
-                Text("Location: \(weather.location.name), \(weather.location.region), \(weather.location.country)")
-                    .font(.headline)
+                Text("\(weather.location.name), \(weather.location.country)")
+                    .font(.title)
+                    .bold()
                 
-                Text("Temperature: \(weather.current.temp_c)°C (\(weather.current.temp_f)°F)")
+                Text("Temperature: \(String(format: "%.1f", weather.current.temp_c))°C")
+                Text("Feels Like: \(String(format: "%.1f", weather.current.feelslike_c))°C")
                 Text("Condition: \(weather.current.condition.text)")
+                Text("Wind: \(String(format: "%.1f", weather.current.wind_kph)) km/h \(weather.current.wind_dir)")
                 Text("Humidity: \(weather.current.humidity)%")
-                Text("Feels Like: \(weather.current.feelslike_c)°C (\(weather.current.feelslike_f)°F)")
-                if(weather.current.air_quality != nil){
-                    Text("Air quality(co): \(weather.current.air_quality?.co ?? 0)")
-                    Text("Air quality(no2): \(weather.current.air_quality?.no2 ?? 0)")
-                }
+                Text("UV Index: \(String(format: "%.1f", weather.current.uv))")
+                Text("Visibility: \(String(format: "%.1f", weather.current.vis_km)) km")
             } else {
+                ProgressView()
                 Text("Fetching weather data...")
             }
         }
         .padding()
-        .onAppear {
-            viewModel.getWeather(for: (48.65107, -79.347015), aqi: "yes"){ result in
-                switch result {
-                case .success:
-                    print("Weather data fetched successfully")
-                case .failure(let error):
-                    print("Error fetching weather data: \(error)")
-                }
+        .onChange(of: locationManager.myCoordinate) { coordinate in
+            if let coord = coordinate {
+                viewModel.getWeather(for: (coord.latitude, coord.longitude), aqi: "no") { _ in }
             }
         }
     }

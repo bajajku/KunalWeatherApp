@@ -4,6 +4,8 @@ class WeatherViewModel: ObservableObject, Identifiable {
     
     @Published var weather: Weather?
     
+    
+    
     let baseURL: String = "https://api.weatherapi.com/v1/current.json?"
     let key: String = "0f9872779b184f46b1c185742241011"
     
