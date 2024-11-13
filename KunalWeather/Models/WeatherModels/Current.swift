@@ -16,5 +16,5 @@ class Current: Codable {
     let humidity: Double
     let feelslike_c: Double
     let feelslike_f: Double
-    let airQuality: AirQuality?
+    let air_quality: AirQuality?
 }

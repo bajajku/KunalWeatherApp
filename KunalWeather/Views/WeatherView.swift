@@ -20,7 +20,10 @@ struct WeatherView: View {
                 Text("Condition: \(weather.current.condition.text)")
                 Text("Humidity: \(weather.current.humidity)%")
                 Text("Feels Like: \(weather.current.feelslike_c)°C (\(weather.current.feelslike_f)°F)")
-                
+                if(weather.current.air_quality != nil){
+                    Text("Air quality(co): \(weather.current.air_quality?.co ?? 0)")
+                    Text("Air quality(no2): \(weather.current.air_quality?.no2 ?? 0)")
+                }
             } else {
                 Text("Fetching weather data...")
             }

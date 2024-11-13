@@ -21,7 +21,9 @@ class WeatherViewModel: ObservableObject, Identifiable {
                 completion(.failure(error))
                 return
             }
+            
             else if let data{
+                print("Data: \(String(data: data, encoding: .utf8)!)")
                 do{
                     let decodedWeather = try JSONDecoder().decode(Weather.self, from: data)
                     DispatchQueue.main.async {
