@@ -7,9 +7,11 @@ class WeatherViewModel: ObservableObject, Identifiable {
     let baseURL: String = "https://api.weatherapi.com/v1/current.json?"
     let key: String = "0f9872779b184f46b1c185742241011"
     
-    func getWeather(for city: String, aqi: String, completion: @escaping (Result<Data, Error>) -> Void) {
+    func getWeather(for coordinates: (Double, Double) , aqi: String, completion: @escaping (Result<Data, Error>) -> Void) {
         
-        let urlString = baseURL + "key=\(key)&q=\(city)&aqi=\(aqi)"
+        let lat = coordinates.0
+        let lon = coordinates.1
+        let urlString = baseURL + "key=\(key)&q=\(lat),\(lon)&aqi=\(aqi)"
         print("URL: \(urlString)")
         guard let url = URL(string: urlString) else {
             print("Invalid URL")

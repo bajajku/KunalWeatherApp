@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct WeatherView: View {
-    @StateObject private var viewModel = WeatherViewModel()
-    
+    @StateObject private var viewModel = WeatherViewModel()    
     var body: some View {
         VStack(spacing: 16) {
             if let weather = viewModel.weather {
@@ -30,7 +29,7 @@ struct WeatherView: View {
         }
         .padding()
         .onAppear {
-            viewModel.getWeather(for: "Mississauga", aqi: "yes"){ result in
+            viewModel.getWeather(for: (48.65107, -79.347015), aqi: "yes"){ result in
                 switch result {
                 case .success:
                     print("Weather data fetched successfully")

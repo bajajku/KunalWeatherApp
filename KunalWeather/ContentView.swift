@@ -14,16 +14,6 @@ struct ContentView: View {
         var body: some View {
             VStack {
                 Text("Weather Data Fetching...")
-                Button("Get"){
-                    viewModel.getWeather(for : "Toronto", aqi: "yes") { result in
-                            switch result {
-                            case .success:
-                                print("Weather data fetched successfully")
-                            case .failure(let error):
-                                print("Error fetching weather data: \(error)")
-                            }
-                        }
-                    }
             }
         }
 }
