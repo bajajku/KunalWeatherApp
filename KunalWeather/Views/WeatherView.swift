@@ -118,8 +118,8 @@ struct WeatherView: View {
                 })
             }
         }
-        .onChange(of: locationManager.myCoordinate) { coordinate in
-            if let coord = coordinate {
+        .onChange(of: locationManager.myCoordinate) { oldValue, newValue in
+            if let coord = newValue {
                 viewModel.getWeather(for: (coord.latitude, coord.longitude), aqi: "no") { _ in }
             }
         }
