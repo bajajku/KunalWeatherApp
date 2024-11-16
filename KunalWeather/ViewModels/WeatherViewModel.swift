@@ -1,3 +1,6 @@
+// Kunal Bajaj
+// 991648986
+
 import Foundation
 
 class WeatherViewModel: ObservableObject, Identifiable {
