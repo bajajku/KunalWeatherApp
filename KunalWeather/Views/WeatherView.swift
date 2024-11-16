@@ -16,7 +16,8 @@ struct WeatherView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
+            // Background gradient for app,
+            // kept colors as bluish to match weather theme.
             LinearGradient(
                 gradient: Gradient(colors: [Color.blue.opacity(0.6), Color.blue.opacity(0.2)]),
                 startPoint: .top,
@@ -24,6 +25,7 @@ struct WeatherView: View {
             )
             .ignoresSafeArea()
             
+            // Main content, wrapped in ScrollView
             ScrollView {
                 VStack(spacing: 20) {
                     if let weather = viewModel.weather {
@@ -32,7 +34,7 @@ struct WeatherView: View {
                             .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.white)
                         
-                        // Custom Location Button
+                        // Custom Location Button which let user input custom coordinates toi fetch weather
                         Button(action: {
                             showingCoordinateInput = true
                         }) {
@@ -47,7 +49,7 @@ struct WeatherView: View {
                             .cornerRadius(20)
                         }
                         
-                        // Weather Icon and Temperature
+                        // Weather Icon provided by API
                         VStack(spacing: 10) {
                             AsyncImage(url: URL(string: "https:\(weather.current.condition.icon)")) { image in
                                 image
@@ -68,7 +70,7 @@ struct WeatherView: View {
                         }
                         .padding(.vertical)
                         
-                        // Weather Details
+                        // Weather Details nested in VStack displaying various weather details, necessary for user.
                         VStack(spacing: 15) {
                             WeatherDetailRow(icon: "thermometer", title: "Feels Like", value: "\(String(format: "%.1f", weather.current.feelslike_c))°C")
                             WeatherDetailRow(icon: "wind", title: "Wind", value: "\(String(format: "%.1f", weather.current.wind_kph)) km/h \(weather.current.wind_dir)")
@@ -94,6 +96,7 @@ struct WeatherView: View {
             }
         }
         .sheet(isPresented: $showingCoordinateInput) {
+            // UI for custom coordinate input form
             NavigationStack {
                 Form {
                     Section(header: Text("Enter Coordinates")) {
@@ -118,34 +121,11 @@ struct WeatherView: View {
                 })
             }
         }
+        // Fetch weather data when location changes, and update weather data.
         .onChange(of: locationManager.myCoordinate) { oldValue, newValue in
             if let coord = newValue {
                 viewModel.getWeather(for: (coord.latitude, coord.longitude), aqi: "no") { _ in }
             }
-        }
-    }
-}
-
-// Helper view for weather details
-struct WeatherDetailRow: View {
-    let icon: String
-    let title: String
-    let value: String
-    
-    var body: some View {
-        HStack {
-            Image(systemName: icon)
-                .frame(width: 30)
-                .foregroundColor(.white)
-            
-            Text(title)
-                .foregroundColor(.white)
-            
-            Spacer()
-            
-            Text(value)
-                .foregroundColor(.white)
-                .bold()
         }
     }
 }
